@@ -6,6 +6,10 @@
   "files": [
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruslanpetunin/orchestrator-pp-core"
+  },
   "scripts": {
     "build": "tsup src/index.ts --dts --format cjs --clean"
   },
