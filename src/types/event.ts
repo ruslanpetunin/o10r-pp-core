@@ -31,6 +31,6 @@ export type Emit <
   M extends Record<string, (...args: any[]) => void>
 > = <K extends keyof M>(
   eventName: K,
-  ...args: Parameters<M[K]>
+  ...args: [...Parameters<M[K]>]
 ) => void;
 /* eslint-enable @typescript-eslint/no-explicit-any */
