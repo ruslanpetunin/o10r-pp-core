@@ -6,6 +6,8 @@ export default function(host: string): Api {
   const { request } = useHttp();
 
   async function getProjectSettings(projectHash: string): Promise<ProjectSettings> {
+    console.log('TEST');
+
     return request<ProjectSettings>(`${host}/project/settings/${projectHash}.json`);
   }
 
