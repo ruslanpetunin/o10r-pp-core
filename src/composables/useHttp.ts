@@ -1,4 +1,5 @@
-import { FetchOptions, FetchRequestError, HttpMethod } from '../types/http'
+import { FetchRequestError, HttpMethod } from '../types/http';
+import type { FetchOptions } from '../types/http';
 
 async function request<T = unknown>(
   url: string,

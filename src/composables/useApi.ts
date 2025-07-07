@@ -1,5 +1,5 @@
-import { Api } from '../types/api';
-import { ProjectSettings } from '../types/data';
+import type { Api } from '../types/api';
+import type { ProjectSettings } from '../types/data';
 import useHttp from './useHttp'
 
 export default function(host: string): Api {
