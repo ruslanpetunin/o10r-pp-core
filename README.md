@@ -16,14 +16,6 @@ npm install orchestrator-pp-core
 
 ---
 
-## 🔧 Build
-
-```bash
-npm run build
-```
-
----
-
 ## 🧰 Features
 
 ### 1. `useApi`
