@@ -1,4 +1,4 @@
-export interface ProjectSettings {
+export interface ProjectSettingsData {
   methods: PaymentMethodData[];
 }
 

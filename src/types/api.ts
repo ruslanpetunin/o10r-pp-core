@@ -1,5 +1,5 @@
-import type { ProjectSettings } from './data';
+import type { ProjectSettingsData } from './data';
 
 export interface Api {
-  getProjectSettings: (projectHash: string) => Promise<ProjectSettings>;
+  getProjectSettings: (projectHash: string) => Promise<ProjectSettingsData>;
 }
