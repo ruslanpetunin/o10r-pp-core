@@ -58,9 +58,18 @@ export default function(api: Api): Translator {
     throw new Error('Language not set. Please call setLanguage before translating.');
   }
 
+  function getLanguage(): Language {
+    if (!currentLanguage) {
+      throw new Error('Language not set. Please call setLanguage before getting the current language.');
+    }
+
+    return currentLanguage;
+  }
+
   return {
     translate,
     setLanguage,
+    getLanguage,
     on,
     off
   };

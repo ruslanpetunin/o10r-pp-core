@@ -8,6 +8,7 @@ export enum Language {
 export interface Translator extends Omit<EventManager<TranslationEventMap>, 'emit'> {
   translate: Translate;
   setLanguage: (lang: Language) => Promise<void>;
+  getLanguage: () => Language;
 }
 
 export type TranslationEventMap = {

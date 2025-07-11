@@ -11,7 +11,7 @@ export default function(host: string): Api {
   }
 
   async function getTranslations(language: Language): Promise<TranslationData> {
-    return request<TranslationData>(`${host}/translations/${language}`);
+    return request<TranslationData>(`${host}/translations/${language}.json`);
   }
 
   return {
