@@ -126,3 +126,26 @@ const projectSettings = await useProjectSettings(api, initData, paymentMethodFac
 ```
 
 ---
+
+### 6. `useTranslations`
+
+Loads translation dictionaries from an API endpoint and provides a `translate` function for substituting template variables.
+It also exposes helpers for switching the current language and listening for language changes.
+
+#### Example:
+
+```ts
+import { useApi, useTranslations, Language } from 'orchestrator-pp-core';
+
+const api = useApi('https://example.com');
+const { translate, setLanguage, onLanguageChange } = useTranslations(api, Language.EN);
+
+onLanguageChange((lang) => {
+  console.log('Language switched to', lang);
+});
+
+await setLanguage(Language.RU);
+const hello = translate('hello', { user: { email: 'test@example.com' } });
+```
+
+---

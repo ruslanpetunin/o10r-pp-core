@@ -8,6 +8,8 @@ export interface InitData {
   project_hash: string;
 }
 
+export type TranslationData = Record<string, string>;
+
 export interface PaymentMethodData {
   code: string,
   icon: string,

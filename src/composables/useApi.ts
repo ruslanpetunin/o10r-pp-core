@@ -1,5 +1,6 @@
 import type { Api } from '../types/api';
-import type { ProjectSettingsData } from '../types/data';
+import type { ProjectSettingsData, TranslationData } from '../types/data';
+import type { Language } from '../types/translator';
 import useHttp from './useHttp';
 
 export default function(host: string): Api {
@@ -9,7 +10,12 @@ export default function(host: string): Api {
     return request<ProjectSettingsData>(`${host}/project/settings/${projectHash}.json`);
   }
 
+  async function getTranslations(language: Language): Promise<TranslationData> {
+    return request<TranslationData>(`${host}/translations/${language}`);
+  }
+
   return {
-    getProjectSettings
+    getProjectSettings,
+    getTranslations
   }
 }
