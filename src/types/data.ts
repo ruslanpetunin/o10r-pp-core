@@ -20,6 +20,8 @@ export enum PaymentMethodFieldType {
   EMAIL = 'email',
   TEL = 'tel',
   PASSWORD = 'password',
+  SELECT = 'select',
+  CHECKBOX = 'checkbox',
 }
 
 export interface PaymentMethodFieldValidator {
@@ -27,11 +29,36 @@ export interface PaymentMethodFieldValidator {
   options?: Record<string, unknown>,
 }
 
-export type PaymentMethodField = PaymentMethodFieldBase;
+export interface PaymentMethodFieldOption {
+  label: string;
+  value: string;
+}
 
 export interface PaymentMethodFieldBase {
   name: string,
-  type: PaymentMethodFieldType,
   autocomplete?: string,
   validators: PaymentMethodFieldValidator[],
 }
+
+export interface PaymentMethodFieldText extends PaymentMethodFieldBase {
+  type:
+    | PaymentMethodFieldType.NUMBER
+    | PaymentMethodFieldType.TEXT
+    | PaymentMethodFieldType.EMAIL
+    | PaymentMethodFieldType.TEL
+    | PaymentMethodFieldType.PASSWORD;
+}
+
+export interface PaymentMethodFieldSelect extends PaymentMethodFieldBase {
+  type: PaymentMethodFieldType.SELECT;
+  options: PaymentMethodFieldOption[];
+}
+
+export interface PaymentMethodFieldCheckbox extends PaymentMethodFieldBase {
+  type: PaymentMethodFieldType.CHECKBOX;
+}
+
+export type PaymentMethodField =
+  | PaymentMethodFieldText
+  | PaymentMethodFieldSelect
+  | PaymentMethodFieldCheckbox;
