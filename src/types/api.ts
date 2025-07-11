@@ -1,7 +1,7 @@
-import type { ProjectSettingsData } from './data';
-import type { Language, Translations } from './translation';
+import type { ProjectSettingsData, TranslationData } from './data';
+import type { Language } from './translator';
 
 export interface Api {
   getProjectSettings: (projectHash: string) => Promise<ProjectSettingsData>;
-  getTranslations: (language: Language) => Promise<Translations>;
+  getTranslations: (language: Language) => Promise<TranslationData>;
 }
