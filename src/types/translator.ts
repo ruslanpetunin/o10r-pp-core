@@ -6,10 +6,12 @@ export enum Language {
 }
 
 export interface Translator extends Omit<EventManager<TranslationEventMap>, 'emit'> {
-  translate: (key: string, data?: Record<string, unknown>) => string;
+  translate: Translate;
   setLanguage: (lang: Language) => Promise<void>;
 }
 
 export type TranslationEventMap = {
   languageChanged: (language: Language) => void;
 };
+
+export type Translate = (key: string, data?: Record<string, unknown>) => string;

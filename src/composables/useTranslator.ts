@@ -25,12 +25,15 @@ export default function(api: Api): Translator {
   }
 
   function getNested(data: Record<string, unknown>, path: string[]): unknown {
-    return path.reduce<unknown>((acc, key) => {
-      if (typeof acc === 'object' && acc !== null && key in (acc as Record<string, unknown>)) {
-        return (acc as Record<string, unknown>)[key];
-      }
-      return undefined;
-    }, data);
+    return path.reduce<unknown>(
+      (acc, key) => {
+        if (typeof acc === 'object' && acc !== null && key in (acc as Record<string, unknown>)) {
+          return (acc as Record<string, unknown>)[key];
+        }
+        return undefined;
+      },
+      data
+    );
   }
 
   function replaceTemplateVariables(translation: string, data: Record<string, unknown>): string {
