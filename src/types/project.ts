@@ -8,10 +8,11 @@ export interface PaymentMethod {
   code: string,
   icon: string,
   paymentForm: PaymentForm,
+  getCollectedData: () => Record<string, unknown>,
   onRemove?: () => Promise<void>,
 }
 
 export interface PaymentForm {
   fields: PaymentMethodField[],
-  onSubmit?: (data: Record<string, unknown>) => Promise<void>,
+  onSubmit?: (data: Record<string, unknown>) => Promise<void> | void,
 }
