@@ -20,6 +20,7 @@ export default function(api: Api): Translator {
     await load(lang);
 
     currentLanguage = lang;
+    document.documentElement.lang = lang;
 
     emit('languageChanged', lang);
   }
