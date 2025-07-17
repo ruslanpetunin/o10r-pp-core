@@ -16,9 +16,8 @@ export interface PaymentMethodData {
   fields: PaymentMethodField[]
 }
 
-export interface PaymentMethodFieldValidator {
-  name: string,
-  options?: Record<string, unknown>,
+export interface PaymentMethodFieldValidationRules extends Record<string, unknown[]> {
+  required: [];
 }
 
 export interface PaymentMethodFieldOption {
@@ -29,7 +28,7 @@ export interface PaymentMethodFieldOption {
 export interface PaymentMethodFieldBase {
   name: string,
   autocomplete?: string,
-  validators: PaymentMethodFieldValidator[],
+  validation?: Partial<PaymentMethodFieldValidationRules>,
 }
 
 export interface PaymentMethodFieldText extends PaymentMethodFieldBase {
