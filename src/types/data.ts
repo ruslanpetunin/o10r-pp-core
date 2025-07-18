@@ -16,7 +16,7 @@ export interface PaymentMethodData {
   fields: PaymentMethodField[]
 }
 
-export interface PaymentMethodFieldValidationRules extends Record<string, unknown[]> {
+export interface PaymentMethodFieldValidationRules {
   required: [];
 }
 
@@ -53,3 +53,20 @@ export type PaymentMethodField =
   | PaymentMethodFieldText
   | PaymentMethodFieldSelect
   | PaymentMethodFieldCheckbox;
+
+export type PaymentStatusData =
+  | { status: PaymentStatus.NOT_STARTED }
+  | { status: PaymentStatus.PENDING } & PaymentStatusInfo
+  | { status: PaymentStatus.SUCCESS } & PaymentStatusInfo
+  | { status: PaymentStatus.FAILED } & PaymentStatusInfo;
+
+export type PaymentStatusInfo = {
+  payment_method_code: string;
+}
+
+export enum PaymentStatus {
+  NOT_STARTED = 'not found',
+  PENDING = 'pending',
+  SUCCESS = 'success',
+  FAILED = 'failed',
+}
