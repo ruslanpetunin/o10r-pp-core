@@ -18,6 +18,11 @@ export interface PaymentMethodData {
 
 export interface PaymentMethodFieldValidationRules {
   required: [];
+  pan: [];
+  expiry_month: [];
+  expiry_year: [string|undefined];
+  cvv: [string|undefined];
+  cardholder: [];
 }
 
 export interface PaymentMethodFieldOption {
