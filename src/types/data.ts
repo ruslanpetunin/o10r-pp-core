@@ -62,8 +62,36 @@ export type PaymentMethodField =
 export type PaymentStatusData =
   | { status: PaymentStatus.NOT_STARTED }
   | { status: PaymentStatus.PENDING } & PaymentStatusInfo
+  | { status: PaymentStatus.AWAITING_3DS_RESULT } & PaymentStatusInfo & ThreeDS
   | { status: PaymentStatus.SUCCESS } & PaymentStatusInfo
   | { status: PaymentStatus.FAILED } & PaymentStatusInfo;
+
+export type ThreeDS = { threeds: { iframe: ThreeDS2Iframe } | { redirect: ThreeDS2Redirect | ThreeDS1 } };
+
+export type ThreeDS1 = {
+  url: string;
+  params: {
+    md: string;
+    pa_req: string;
+    term_url: string;
+  }
+}
+
+export type ThreeDS2Iframe = {
+  url: string;
+  params: {
+    threeDSMethodData: string;
+    '3DSMethodData': string;
+  };
+}
+
+export type ThreeDS2Redirect = {
+  url: string,
+  params: {
+    threeDSSessionData: string,
+    creq: string,
+  }
+}
 
 export type PaymentStatusInfo = {
   payment_method_code: string;
@@ -72,6 +100,7 @@ export type PaymentStatusInfo = {
 export enum PaymentStatus {
   NOT_STARTED = 'not found',
   PENDING = 'pending',
+  AWAITING_3DS_RESULT = 'awaiting 3ds result',
   SUCCESS = 'success',
   FAILED = 'failed',
 }

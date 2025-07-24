@@ -33,12 +33,55 @@ export default function(host: string): Api {
               status: PaymentStatus.PENDING,
               payment_method_code: 'card'
             });
+          // } else if (attempts < 10) {
+          //   resolve({
+          //     status: PaymentStatus.AWAITING_3DS_RESULT,
+          //     threeds: {
+          //       redirect: {
+          //         url: 'https://example.com/3ds-iframe',
+          //         params: {
+          //           md: 'md-data',
+          //           pa_req: 'pa_req-data',
+          //           term_url: 'https://example.com/term-url'
+          //         }
+          //       }
+          //     },
+          //     payment_method_code: 'card'
+          //   });
+          }  else if (attempts < 10) {
+            resolve({
+              status: PaymentStatus.AWAITING_3DS_RESULT,
+              threeds: {
+                iframe: {
+                  url: 'https://example.com/3ds-iframe',
+                  params: {
+                    threeDSMethodData: 'some-data',
+                    '3DSMethodData': 'some-data'
+                  }
+                },
+              },
+              payment_method_code: 'card'
+            });
+          }  else if (attempts < 15) {
+            resolve({
+              status: PaymentStatus.AWAITING_3DS_RESULT,
+              threeds: {
+                redirect: {
+                  url: 'https://example.com/3ds-redirect',
+                  params: {
+                    threeDSSessionData: 'session-data',
+                    creq: 'creq-data'
+                  }
+                },
+              },
+              payment_method_code: 'card'
+            });
+          } else {
+            resolve({
+              status: PaymentStatus.SUCCESS,
+              payment_method_code: 'card'
+            });
           }
-
-          resolve({
-            status: PaymentStatus.SUCCESS,
-            payment_method_code: 'card'
-          });
         }, 1000);
       }
     );
