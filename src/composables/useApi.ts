@@ -1,5 +1,10 @@
 import type { Api } from '../types/api';
-import type { PaymentStatusData, ProjectSettingsData, TranslationData } from '../types/data';
+import type {
+  PaymentStatusData,
+  ProjectSettingsData,
+  SavedCard,
+  TranslationData
+} from '../types/data'
 import { PaymentStatus } from '../types/data';
 import type { Language } from '../types/translator';
 import useHttp from './useHttp';
@@ -89,14 +94,57 @@ export default function(host: string): Api {
     return await kindaRequest;
   }
 
+  async function removeSavedCard(token: string, cardId: number): Promise<void> {
+    console.log(`Removing saved card with ID ${cardId} via token: ${token}`);
+
+    return new Promise((resolve) => setTimeout(resolve, 1000));
+  }
+
+  async function getSavedCards(token: string): Promise<SavedCard[]> {
+    console.log(`Getting saved cards via token: ${token}`);
+
+    return await new Promise(
+      (resolve) => {
+        setTimeout(
+          () => resolve([
+            {
+              id: 1,
+              last_four_digits: '4211',
+              type: 'visa',
+              expiry_month: '11',
+              expiry_year: '25'
+            },
+            {
+              id: 2,
+              last_four_digits: '1233',
+              type: 'mastercard',
+              expiry_month: '09',
+              expiry_year: '26'
+            },
+            {
+              id: 3,
+              last_four_digits: '3781',
+              type: 'visa',
+              expiry_month: '01',
+              expiry_year: '25'
+            },
+          ]),
+          5000
+        )
+      }
+    );
+  }
+
   async function pay(token: string, data: Record<string, unknown>): Promise<void> {
     console.log(`Pay request is not implemented yet. Token: ${token}, Data:`, data);
   }
 
   return {
     getProjectSettings,
+    getSavedCards,
     getTranslations,
     getPaymentStatus,
+    removeSavedCard,
     pay
   }
 }

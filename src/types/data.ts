@@ -6,6 +6,7 @@ export interface InitData {
   amount: number;
   currency: string;
   project_hash: string;
+  has_saved_cards?: boolean;
 }
 
 export type TranslationData = Record<string, string>;
@@ -32,6 +33,8 @@ export interface PaymentMethodFieldOption {
 
 export interface PaymentMethodFieldBase {
   name: string,
+  value?: string;
+  disabled?: boolean,
   autocomplete?: string,
   validation?: Partial<PaymentMethodFieldValidationRules>,
 }
@@ -103,4 +106,12 @@ export enum PaymentStatus {
   AWAITING_3DS_RESULT = 'awaiting 3ds result',
   SUCCESS = 'success',
   FAILED = 'failed',
+}
+
+export interface SavedCard {
+  id: number;
+  type: string;
+  last_four_digits: string;
+  expiry_month: string;
+  expiry_year: string;
 }
