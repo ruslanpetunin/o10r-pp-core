@@ -55,32 +55,41 @@ export default function(host: string): Api {
           //   });
           }  else if (attempts < 10) {
             resolve({
-              status: PaymentStatus.AWAITING_3DS_RESULT,
-              threeds: {
-                iframe: {
-                  url: 'https://example.com/3ds-iframe',
-                  params: {
-                    threeDSMethodData: 'some-data',
-                    '3DSMethodData': 'some-data'
-                  }
-                },
+              status: PaymentStatus.AWAITING_REDIRECT,
+              redirect: {
+                url: 'https://example.com/aps',
+                method: 'GET'
               },
               payment_method_code: 'card'
             });
-          }  else if (attempts < 15) {
-            resolve({
-              status: PaymentStatus.AWAITING_3DS_RESULT,
-              threeds: {
-                redirect: {
-                  url: 'https://example.com/3ds-redirect',
-                  params: {
-                    threeDSSessionData: 'session-data',
-                    creq: 'creq-data'
-                  }
-                },
-              },
-              payment_method_code: 'card'
-            });
+          // }  else if (attempts < 10) {
+          //   resolve({
+          //     status: PaymentStatus.AWAITING_3DS_RESULT,
+          //     threeds: {
+          //       iframe: {
+          //         url: 'https://example.com/3ds-iframe',
+          //         params: {
+          //           threeDSMethodData: 'some-data',
+          //           '3DSMethodData': 'some-data'
+          //         }
+          //       },
+          //     },
+          //     payment_method_code: 'card'
+          //   });
+          // }  else if (attempts < 15) {
+          //   resolve({
+          //     status: PaymentStatus.AWAITING_3DS_RESULT,
+          //     threeds: {
+          //       redirect: {
+          //         url: 'https://example.com/3ds-redirect',
+          //         params: {
+          //           threeDSSessionData: 'session-data',
+          //           creq: 'creq-data'
+          //         }
+          //       },
+          //     },
+          //     payment_method_code: 'card'
+          //   });
           } else {
             resolve({
               status: PaymentStatus.SUCCESS,

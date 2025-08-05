@@ -66,10 +66,19 @@ export type PaymentStatusData =
   | { status: PaymentStatus.NOT_STARTED }
   | { status: PaymentStatus.PENDING } & PaymentStatusInfo
   | { status: PaymentStatus.AWAITING_3DS_RESULT } & PaymentStatusInfo & ThreeDS
+  | { status: PaymentStatus.AWAITING_REDIRECT } & PaymentStatusInfo & Redirect
   | { status: PaymentStatus.SUCCESS } & PaymentStatusInfo
   | { status: PaymentStatus.FAILED } & PaymentStatusInfo;
 
 export type ThreeDS = { threeds: { iframe: ThreeDS2Iframe } | { redirect: ThreeDS2Redirect | ThreeDS1 } };
+
+export type Redirect = {
+  redirect: {
+    url: string;
+    method: 'GET' | 'POST';
+    params?: Record<string, string>;
+  }
+}
 
 export type ThreeDS1 = {
   url: string;
@@ -104,6 +113,7 @@ export enum PaymentStatus {
   NOT_STARTED = 'not found',
   PENDING = 'pending',
   AWAITING_3DS_RESULT = 'awaiting 3ds result',
+  AWAITING_REDIRECT = 'awaiting redirect result',
   SUCCESS = 'success',
   FAILED = 'failed',
 }
