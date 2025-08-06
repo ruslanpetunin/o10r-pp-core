@@ -53,7 +53,7 @@ export default function(host: string): Api {
           //     },
           //     payment_method_code: 'card'
           //   });
-          }  else if (attempts < 100) {
+          }  else if (attempts < 15) {
             resolve({
               status: PaymentStatus.AWAITING_CLARIFICATION,
               clarification_fields: [
@@ -158,12 +158,17 @@ export default function(host: string): Api {
     console.log(`Pay request is not implemented yet. Token: ${token}, Data:`, data);
   }
 
+  async function clarify(token: string, data: Record<string, unknown>): Promise<void> {
+    console.log(`Clarify request is not implemented yet. Token: ${token}, Data:`, data);
+  }
+
   return {
     getProjectSettings,
     getSavedCards,
     getTranslations,
     getPaymentStatus,
     removeSavedCard,
-    pay
+    pay,
+    clarify
   }
 }

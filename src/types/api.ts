@@ -8,4 +8,5 @@ export interface Api {
   getPaymentStatus: (token: string) => Promise<PaymentStatusData>;
   removeSavedCard: (token: string, cardId: number) => Promise<void>;
   pay: (token: string, data: Record<string, unknown>) => Promise<void>;
+  clarify: (token: string, data: Record<string, unknown>) => Promise<void>;
 }
