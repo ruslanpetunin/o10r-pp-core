@@ -1,6 +1,6 @@
-# q10r-pp-core
+# o10r-pp-core
 
-`q10r-pp-core` is a TypeScript utility library that provides essential foundational tools for building a modern payment page.
+`o10r-pp-core` is a TypeScript utility library that provides essential foundational tools for building a modern payment page.
 
 It offers ready-to-use, composable utilities for interacting with the payment API, managing events, handling HTTP requests, decoding JWT tokens, and processing project settings.
 
@@ -9,7 +9,7 @@ It offers ready-to-use, composable utilities for interacting with the payment AP
 ## 📦 Installation
 
 ```bash
-npm install q10r-pp-core
+npm install o10r-pp-core
 ```
 
 > Requires **Node.js v24+**
@@ -25,7 +25,7 @@ Provides an API client object with all available payment page methods, fully typ
 #### Example:
 
 ```ts
-import { useApi } from 'q10r-pp-core';
+import { useApi } from 'o10r-pp-core';
 
 const apiHost = 'https://example.com';
 const api = useApi(apiHost);
@@ -48,7 +48,7 @@ Provides an object for subscribing to, emitting, and unsubscribing from events.
 #### Example:
 
 ```ts
-import { useEventManager } from 'q10r-pp-core';
+import { useEventManager } from 'o10r-pp-core';
 
 type EventNameHandler = (param1: string, param2: number) => void;
 
@@ -76,7 +76,7 @@ A simple HTTP utility that allows making typed requests and handling errors grac
 #### Example:
 
 ```ts
-import { useHttp } from 'q10r-pp-core';
+import { useHttp } from 'o10r-pp-core';
 
 type ResponseExample = {
   id: number;
@@ -103,7 +103,7 @@ Extracts initialization data for the payment page from a Base64-encoded JWT toke
 #### Example:
 
 ```ts
-import { useJwtToken } from 'q10r-pp-core';
+import { useJwtToken } from 'o10r-pp-core';
 
 const token = '...';
 const initData = useJwtToken(token);
@@ -118,7 +118,7 @@ Processes raw API project settings and transforms them into a ready-to-use confi
 #### Example:
 
 ```ts
-import { useProjectSettings } from 'q10r-pp-core';
+import { useProjectSettings } from 'o10r-pp-core';
 
 ...
 
@@ -135,7 +135,7 @@ It also exposes helpers for switching the current language and listening for lan
 #### Example:
 
 ```ts
-import { useApi, useTranslations, Language } from 'q10r-pp-core';
+import { useApi, useTranslations, Language } from 'o10r-pp-core';
 
 const api = useApi('https://example.com');
 const { translate, setLanguage, onLanguageChange } = useTranslations(api, Language.EN);
