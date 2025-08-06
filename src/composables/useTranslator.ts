@@ -51,7 +51,7 @@ export default function(api: Api): Translator {
   function translate(key: string, data?: Record<string, unknown>): string {
     if (currentLanguage) {
       const translations = cache[currentLanguage];
-      const translation = translations?.[key] ?? key;
+      const translation = translations?.[key] ?? `{{${key}}}`;
 
       return data ? replaceTemplateVariables(translation, data) : translation;
     }
