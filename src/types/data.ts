@@ -14,10 +14,10 @@ export type TranslationData = Record<string, string>;
 export interface PaymentMethodData {
   code: string,
   icon: string,
-  fields: PaymentMethodField[]
+  fields: Field[]
 }
 
-export interface PaymentMethodFieldValidationRules {
+export interface FieldValidationRules {
   required: [];
   pan: [];
   expiry_month: [];
@@ -26,20 +26,20 @@ export interface PaymentMethodFieldValidationRules {
   cardholder: [];
 }
 
-export interface PaymentMethodFieldOption {
+export interface FieldOption {
   label: string;
   value: string;
 }
 
-export interface PaymentMethodFieldBase {
+export interface FieldBase {
   name: string,
   value?: string;
   disabled?: boolean,
   autocomplete?: string,
-  validation?: Partial<PaymentMethodFieldValidationRules>,
+  validation?: Partial<FieldValidationRules>,
 }
 
-export interface PaymentMethodFieldText extends PaymentMethodFieldBase {
+export interface FieldText extends FieldBase {
   type:
     | 'number'
     | 'text'
@@ -48,29 +48,34 @@ export interface PaymentMethodFieldText extends PaymentMethodFieldBase {
     | 'password';
 }
 
-export interface PaymentMethodFieldSelect extends PaymentMethodFieldBase {
+export interface FieldSelect extends FieldBase {
   type: 'select';
-  options: PaymentMethodFieldOption[];
+  options: FieldOption[];
 }
 
-export interface PaymentMethodFieldCheckbox extends PaymentMethodFieldBase {
+export interface FieldCheckbox extends FieldBase {
   type: 'checkbox';
 }
 
-export type PaymentMethodField =
-  | PaymentMethodFieldText
-  | PaymentMethodFieldSelect
-  | PaymentMethodFieldCheckbox;
+export type Field =
+  | FieldText
+  | FieldSelect
+  | FieldCheckbox;
 
 export type PaymentStatusData =
   | { status: PaymentStatus.NOT_STARTED }
   | { status: PaymentStatus.PENDING } & PaymentStatusInfo
   | { status: PaymentStatus.AWAITING_3DS_RESULT } & PaymentStatusInfo & ThreeDS
   | { status: PaymentStatus.AWAITING_REDIRECT } & PaymentStatusInfo & Redirect
+  | { status: PaymentStatus.AWAITING_CLARIFICATION } & PaymentStatusInfo & Clarification
   | { status: PaymentStatus.SUCCESS } & PaymentStatusInfo
   | { status: PaymentStatus.FAILED } & PaymentStatusInfo;
 
 export type ThreeDS = { threeds: { iframe: ThreeDS2Iframe } | { redirect: ThreeDS2Redirect | ThreeDS1 } };
+
+export type Clarification = {
+  clarification_fields: Field[]
+}
 
 export type Redirect = {
   redirect: {
@@ -114,6 +119,7 @@ export enum PaymentStatus {
   PENDING = 'pending',
   AWAITING_3DS_RESULT = 'awaiting 3ds result',
   AWAITING_REDIRECT = 'awaiting redirect result',
+  AWAITING_CLARIFICATION = 'awaiting clarification',
   SUCCESS = 'success',
   FAILED = 'failed',
 }

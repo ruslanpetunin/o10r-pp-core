@@ -53,15 +53,25 @@ export default function(host: string): Api {
           //     },
           //     payment_method_code: 'card'
           //   });
-          }  else if (attempts < 10) {
+          }  else if (attempts < 100) {
             resolve({
-              status: PaymentStatus.AWAITING_REDIRECT,
-              redirect: {
-                url: 'https://example.com/aps',
-                method: 'GET'
-              },
+              status: PaymentStatus.AWAITING_CLARIFICATION,
+              clarification_fields: [
+                { name: 'firstname', type: 'text', validation: { required: [] } },
+                { name: 'lastname', type: 'text', validation: { required: [] } },
+                { name: 'email', type: 'text' },
+              ],
               payment_method_code: 'card'
             });
+          // }  else if (attempts < 10) {
+          //   resolve({
+          //     status: PaymentStatus.AWAITING_REDIRECT,
+          //     redirect: {
+          //       url: 'https://example.com/aps',
+          //       method: 'GET'
+          //     },
+          //     payment_method_code: 'card'
+          //   });
           // }  else if (attempts < 10) {
           //   resolve({
           //     status: PaymentStatus.AWAITING_3DS_RESULT,
