@@ -65,13 +65,24 @@ export type Field =
 export type PaymentStatusData =
   | { status: PaymentStatus.NOT_STARTED }
   | { status: PaymentStatus.PENDING } & PaymentStatusInfo
-  | { status: PaymentStatus.AWAITING_3DS_RESULT } & PaymentStatusInfo & ThreeDS
+  | { status: PaymentStatus.AWAITING_3DS_RESULT } & PaymentStatusInfo & ThreeDS & Account
   | { status: PaymentStatus.AWAITING_REDIRECT } & PaymentStatusInfo & Redirect
   | { status: PaymentStatus.AWAITING_CLARIFICATION } & PaymentStatusInfo & Clarification
   | { status: PaymentStatus.SUCCESS } & PaymentStatusInfo
   | { status: PaymentStatus.FAILED } & PaymentStatusInfo;
 
-export type ThreeDS = { threeds: { iframe: ThreeDS2Iframe } | { redirect: ThreeDS2Redirect | ThreeDS1 } };
+export interface Account {
+  account: {
+    number: string;
+    expiry_month: string;
+    expiry_year: string;
+    card_holder: string;
+  }
+}
+
+export interface ThreeDS {
+  threeds: { iframe: ThreeDS2Iframe } | { redirect: ThreeDS2Redirect | ThreeDS1, is_cascading?: boolean }
+}
 
 export type Clarification = {
   clarification_fields: Field[]

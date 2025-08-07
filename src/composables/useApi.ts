@@ -38,31 +38,38 @@ export default function(host: string): Api {
               status: PaymentStatus.PENDING,
               payment_method_code: 'card'
             });
-          // } else if (attempts < 10) {
-          //   resolve({
-          //     status: PaymentStatus.AWAITING_3DS_RESULT,
-          //     threeds: {
-          //       redirect: {
-          //         url: 'https://example.com/3ds-iframe',
-          //         params: {
-          //           md: 'md-data',
-          //           pa_req: 'pa_req-data',
-          //           term_url: 'https://example.com/term-url'
-          //         }
-          //       }
-          //     },
-          //     payment_method_code: 'card'
-          //   });
-          }  else if (attempts < 15) {
+          } else if (attempts < 10) {
             resolve({
-              status: PaymentStatus.AWAITING_CLARIFICATION,
-              clarification_fields: [
-                { name: 'firstname', type: 'text', validation: { required: [] } },
-                { name: 'lastname', type: 'text', validation: { required: [] } },
-                { name: 'email', type: 'text' },
-              ],
+              status: PaymentStatus.AWAITING_3DS_RESULT,
+              account: {
+                number: '4242******424242',
+                expiry_month: '11',
+                expiry_year: '33',
+                card_holder: 'SOME CARDHOLDER'
+              },
+              threeds: {
+                is_cascading: true,
+                redirect: {
+                  url: 'https://example.com/3ds-iframe',
+                  params: {
+                    md: 'md-data',
+                    pa_req: 'pa_req-data',
+                    term_url: 'https://example.com/term-url'
+                  }
+                }
+              },
               payment_method_code: 'card'
             });
+          // }  else if (attempts < 15) {
+          //   resolve({
+          //     status: PaymentStatus.AWAITING_CLARIFICATION,
+          //     clarification_fields: [
+          //       { name: 'firstname', type: 'text', validation: { required: [] } },
+          //       { name: 'lastname', type: 'text', validation: { required: [] } },
+          //       { name: 'email', type: 'text' },
+          //     ],
+          //     payment_method_code: 'card'
+          //   });
           // }  else if (attempts < 10) {
           //   resolve({
           //     status: PaymentStatus.AWAITING_REDIRECT,
