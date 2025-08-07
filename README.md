@@ -1,8 +1,6 @@
 # o10r-pp-core
 
-`o10r-pp-core` is a TypeScript utility library that provides essential foundational tools for building a modern payment page.
-
-It offers ready-to-use, composable utilities for interacting with the payment API, managing events, handling HTTP requests, decoding JWT tokens, and processing project settings.
+`o10r-pp-core` is the lowest level helper library for building a modern Payment Page. It offers small, composable utilities for working with APIs, events, HTTP requests, JWT tokens, translations, cookies and card detection.
 
 ---
 
@@ -20,51 +18,32 @@ npm install o10r-pp-core
 
 ### 1. `useApi`
 
-Provides an API client object with all available payment page methods, fully typed.
-
-#### Example:
+Creates an API client object with all available payment page methods, fully typed.
 
 ```ts
 import { useApi } from 'o10r-pp-core';
 
-const apiHost = 'https://example.com';
-const api = useApi(apiHost);
-
-api.getProjectSettings()
-   .then((settings) => {
-     // handle settings
-   })
-   .catch((error) => {
-     // handle error
-   });
+const api = useApi('https://example.com');
+const settings = await api.getProjectSettings();
 ```
 
 ---
 
 ### 2. `useEventManager`
 
-Provides an object for subscribing to, emitting, and unsubscribing from events.
-
-#### Example:
+Provides an object for subscribing to, emitting and unsubscribing from events.
 
 ```ts
 import { useEventManager } from 'o10r-pp-core';
 
-type EventNameHandler = (param1: string, param2: number) => void;
+type EventMap = { eventName: (p1: string, p2: number) => void };
 
-type EventMap = {
-  eventName: EventNameHandler;
-};
+const events = useEventManager<EventMap>();
+const handler = (p1: string, p2: number) => console.log(p1, p2);
 
-const handle: EventNameHandler = (param1, param2) => {
-  console.log(param1, param2);
-};
-
-const eventManager = useEventManager<EventMap>();
-
-eventManager.on('eventName', handle);
-eventManager.emit('eventName', 'test', 4324);
-eventManager.off('eventName', handle);
+events.on('eventName', handler);
+events.emit('eventName', 'test', 4324);
+events.off('eventName', handler);
 ```
 
 ---
@@ -73,34 +52,20 @@ eventManager.off('eventName', handle);
 
 A simple HTTP utility that allows making typed requests and handling errors gracefully.
 
-#### Example:
-
 ```ts
 import { useHttp } from 'o10r-pp-core';
 
-type ResponseExample = {
-  id: number;
-};
+type ResponseExample = { id: number };
 
-const url = 'https://example.com/test';
 const { request } = useHttp();
-
-request<ResponseExample>(url)
-   .then((response) => {
-     // use response
-   })
-   .catch((error) => {
-     // handle error
-   });
+const data = await request<ResponseExample>('https://example.com/test');
 ```
 
 ---
 
 ### 4. `useJwtToken`
 
-Extracts initialization data for the payment page from a Base64-encoded JWT token payload.
-
-#### Example:
+Extracts initialization data for the payment page from a Base64‑encoded JWT token payload.
 
 ```ts
 import { useJwtToken } from 'o10r-pp-core';
@@ -111,41 +76,49 @@ const initData = useJwtToken(token);
 
 ---
 
-### 5. `useProjectSettings`
+### 5. `useTranslator`
 
-Processes raw API project settings and transforms them into a ready-to-use configuration for the payment page.
-
-#### Example:
+Loads translation dictionaries from an API endpoint and provides a `translate` function for substituting template variables. It also exposes helpers for switching the current language and listening for language changes.
 
 ```ts
-import { useProjectSettings } from 'o10r-pp-core';
+import { useApi, useTranslator, Language } from 'o10r-pp-core';
 
-...
+const api = useApi('https://example.com');
+const { translate, setLanguage, on } = useTranslator(api);
 
-const projectSettings = await useProjectSettings(api, initData, paymentMethodFactory);
+on('languageChanged', lang => console.log('Language switched to', lang));
+await setLanguage(Language.RU);
+const hello = translate('hello', { user: { email: 'test@example.com' } });
 ```
 
 ---
 
-### 6. `useTranslations`
+### 6. `useCookies`
 
-Loads translation dictionaries from an API endpoint and provides a `translate` function for substituting template variables.
-It also exposes helpers for switching the current language and listening for language changes.
-
-#### Example:
+Utility for getting, setting and removing cookies in the browser.
 
 ```ts
-import { useApi, useTranslations, Language } from 'o10r-pp-core';
+import { useCookies } from 'o10r-pp-core';
 
-const api = useApi('https://example.com');
-const { translate, setLanguage, onLanguageChange } = useTranslations(api, Language.EN);
+const cookies = useCookies();
 
-onLanguageChange((lang) => {
-  console.log('Language switched to', lang);
-});
+cookies.set('session', '123', { path: '/', secure: true });
+const session = cookies.get('session');
+cookies.remove('session');
+```
 
-await setLanguage(Language.RU);
-const hello = translate('hello', { user: { email: 'test@example.com' } });
+---
+
+### 7. `useCardTypeDetector`
+
+Detects the card type based on the card number using built‑in patterns.
+
+```ts
+import { useCardTypeDetector } from 'o10r-pp-core';
+
+const { detect } = useCardTypeDetector();
+const card = detect('4111111111111111');
+console.log(card?.code); // "VISA"
 ```
 
 ---
