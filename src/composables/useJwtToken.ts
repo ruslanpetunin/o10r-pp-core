@@ -7,8 +7,10 @@ function isInitData(data: unknown): data is InitData {
     return (
       typeof record.amount === 'number' &&
       typeof record.currency === 'string' &&
+      typeof record.payment_id === 'string' &&
       typeof record.project_hash === 'string' &&
-      ['boolean', 'undefined'].includes(typeof record.has_saved_cards)
+      ['boolean', 'undefined'].includes(typeof record.has_saved_cards) &&
+      ['string', 'undefined'].includes(typeof record.payment_desc)
     );
   }
 

@@ -5,6 +5,8 @@ export interface ProjectSettingsData {
 export interface InitData {
   amount: number;
   currency: string;
+  payment_id: string,
+  payment_desc?: string,
   project_hash: string;
   has_saved_cards?: boolean;
 }
