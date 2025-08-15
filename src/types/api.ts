@@ -1,7 +1,6 @@
 import type {
   InitData,
   PaymentStatusData,
-  ProjectSettingsData,
   SavedCard,
   TranslationData
 } from './data'

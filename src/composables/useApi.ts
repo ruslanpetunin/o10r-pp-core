@@ -2,7 +2,6 @@ import type { Api } from '../types/api';
 import type {
   InitData,
   PaymentStatusData,
-  ProjectSettingsData,
   SavedCard,
   TranslationData
 } from '../types/data'
