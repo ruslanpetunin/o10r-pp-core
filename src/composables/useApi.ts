@@ -1,5 +1,6 @@
 import type { Api } from '../types/api';
 import type {
+  InitData,
   PaymentStatusData,
   ProjectSettingsData,
   SavedCard,
@@ -12,8 +13,8 @@ import useHttp from './useHttp';
 export default function(host: string): Api {
   const { request } = useHttp();
 
-  async function getProjectSettings(projectHash: string): Promise<ProjectSettingsData> {
-    return request<ProjectSettingsData>(`${host}/project/settings/${projectHash}.json`);
+  async function getInitData(sid: string): Promise<InitData> {
+    return request<InitData>(`${host}/session/${sid}.json`);
   }
 
   async function getTranslations(language: Language): Promise<TranslationData> {
@@ -21,8 +22,8 @@ export default function(host: string): Api {
   }
 
   let attempts = 0;
-  async function getPaymentStatus(token: string): Promise<PaymentStatusData> {
-    console.log(`Getting payment status via token: ${token}`);
+  async function getPaymentStatus(sid: string): Promise<PaymentStatusData> {
+    console.log(`Getting payment status via sid: ${sid}`);
 
     attempts += 1;
 
@@ -120,14 +121,14 @@ export default function(host: string): Api {
     return await kindaRequest;
   }
 
-  async function removeSavedCard(token: string, cardId: number): Promise<void> {
-    console.log(`Removing saved card with ID ${cardId} via token: ${token}`);
+  async function removeSavedCard(sid: string, cardId: number): Promise<void> {
+    console.log(`Removing saved card with ID ${cardId} via sid: ${sid}`);
 
     return new Promise((resolve) => setTimeout(resolve, 1000));
   }
 
-  async function getSavedCards(token: string): Promise<SavedCard[]> {
-    console.log(`Getting saved cards via token: ${token}`);
+  async function getSavedCards(sid: string): Promise<SavedCard[]> {
+    console.log(`Getting saved cards via sid: ${sid}`);
 
     return await new Promise(
       (resolve) => {
@@ -161,16 +162,16 @@ export default function(host: string): Api {
     );
   }
 
-  async function pay(token: string, data: Record<string, unknown>): Promise<void> {
-    console.log(`Pay request is not implemented yet. Token: ${token}, Data:`, data);
+  async function pay(sid: string, data: Record<string, unknown>): Promise<void> {
+    console.log(`Pay request is not implemented yet. sid: ${sid}, Data:`, data);
   }
 
-  async function clarify(token: string, data: Record<string, unknown>): Promise<void> {
-    console.log(`Clarify request is not implemented yet. Token: ${token}, Data:`, data);
+  async function clarify(sid: string, data: Record<string, unknown>): Promise<void> {
+    console.log(`Clarify request is not implemented yet. sid: ${sid}, Data:`, data);
   }
 
   return {
-    getProjectSettings,
+    getInitData,
     getSavedCards,
     getTranslations,
     getPaymentStatus,

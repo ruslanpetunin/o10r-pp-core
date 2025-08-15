@@ -1,14 +1,18 @@
+export interface PaymentData {
+  id: string;
+  amount: number;
+  currency: string;
+  description?: string;
+  customer_id?: number;
+}
+
 export interface ProjectSettingsData {
   methods: PaymentMethodData[];
 }
 
 export interface InitData {
-  amount: number;
-  currency: string;
-  payment_id: string,
-  payment_desc?: string,
-  project_hash: string;
-  has_saved_cards?: boolean;
+  payment: PaymentData;
+  project: ProjectSettingsData;
 }
 
 export type TranslationData = Record<string, string>;
