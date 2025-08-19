@@ -74,6 +74,7 @@ export type PaymentStatusData =
   | { status: PaymentStatus.AWAITING_3DS_RESULT } & PaymentStatusInfo & ThreeDS & Account
   | { status: PaymentStatus.AWAITING_REDIRECT } & PaymentStatusInfo & Redirect
   | { status: PaymentStatus.AWAITING_CLARIFICATION } & PaymentStatusInfo & Clarification
+  | { status: PaymentStatus.AWAITING_CUSTOMER_ACTION } & PaymentStatusInfo
   | { status: PaymentStatus.SUCCESS } & PaymentStatusInfo
   | { status: PaymentStatus.FAILED } & PaymentStatusInfo;
 
@@ -137,6 +138,7 @@ export enum PaymentStatus {
   AWAITING_3DS_RESULT = 'awaiting 3ds result',
   AWAITING_REDIRECT = 'awaiting redirect result',
   AWAITING_CLARIFICATION = 'awaiting clarification',
+  AWAITING_CUSTOMER_ACTION = 'awaiting customer action',
   SUCCESS = 'success',
   FAILED = 'failed',
 }

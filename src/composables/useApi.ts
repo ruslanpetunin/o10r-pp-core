@@ -60,53 +60,70 @@ export default function(host: string): Api {
               },
               payment_method_code: 'card'
             });
-          // }  else if (attempts < 15) {
-          //   resolve({
-          //     status: PaymentStatus.AWAITING_CLARIFICATION,
-          //     clarification_fields: [
-          //       { name: 'firstname', type: 'text', validation: { required: [] } },
-          //       { name: 'lastname', type: 'text', validation: { required: [] } },
-          //       { name: 'email', type: 'text' },
-          //     ],
-          //     payment_method_code: 'card'
-          //   });
-          // }  else if (attempts < 10) {
-          //   resolve({
-          //     status: PaymentStatus.AWAITING_REDIRECT,
-          //     redirect: {
-          //       url: 'https://example.com/aps',
-          //       method: 'GET'
-          //     },
-          //     payment_method_code: 'card'
-          //   });
-          // }  else if (attempts < 10) {
-          //   resolve({
-          //     status: PaymentStatus.AWAITING_3DS_RESULT,
-          //     threeds: {
-          //       iframe: {
-          //         url: 'https://example.com/3ds-iframe',
-          //         params: {
-          //           threeDSMethodData: 'some-data',
-          //           '3DSMethodData': 'some-data'
-          //         }
-          //       },
-          //     },
-          //     payment_method_code: 'card'
-          //   });
-          // }  else if (attempts < 15) {
-          //   resolve({
-          //     status: PaymentStatus.AWAITING_3DS_RESULT,
-          //     threeds: {
-          //       redirect: {
-          //         url: 'https://example.com/3ds-redirect',
-          //         params: {
-          //           threeDSSessionData: 'session-data',
-          //           creq: 'creq-data'
-          //         }
-          //       },
-          //     },
-          //     payment_method_code: 'card'
-          //   });
+          }  else if (attempts < 15) {
+            resolve({
+              status: PaymentStatus.AWAITING_CLARIFICATION,
+              clarification_fields: [
+                { name: 'first_name', type: 'text', validation: { required: [] } },
+                { name: 'last_name', type: 'text', validation: { required: [] } },
+                { name: 'email', type: 'text' },
+              ],
+              payment_method_code: 'card'
+            });
+          }  else if (attempts < 15) {
+            resolve({
+              status: PaymentStatus.AWAITING_CUSTOMER_ACTION,
+              payment_method_code: 'card'
+            });
+          }  else if (attempts < 10) {
+            resolve({
+              status: PaymentStatus.AWAITING_REDIRECT,
+              redirect: {
+                url: 'https://example.com/aps',
+                method: 'GET'
+              },
+              payment_method_code: 'card'
+            });
+          }  else if (attempts < 15) {
+            resolve({
+              status: PaymentStatus.AWAITING_3DS_RESULT,
+              account: {
+                number: '4242******424242',
+                expiry_month: '11',
+                expiry_year: '33',
+                card_holder: 'SOME CARDHOLDER'
+              },
+              threeds: {
+                iframe: {
+                  url: 'https://example.com/3ds-iframe',
+                  params: {
+                    threeDSMethodData: 'some-data',
+                    '3DSMethodData': 'some-data'
+                  }
+                },
+              },
+              payment_method_code: 'card'
+            });
+          }  else if (attempts < 20) {
+            resolve({
+              status: PaymentStatus.AWAITING_3DS_RESULT,
+              account: {
+                number: '4242******424242',
+                expiry_month: '11',
+                expiry_year: '33',
+                card_holder: 'SOME CARDHOLDER'
+              },
+              threeds: {
+                redirect: {
+                  url: 'https://example.com/3ds-redirect',
+                  params: {
+                    threeDSSessionData: 'session-data',
+                    creq: 'creq-data'
+                  }
+                },
+              },
+              payment_method_code: 'card'
+            });
           } else {
             resolve({
               status: PaymentStatus.SUCCESS,
