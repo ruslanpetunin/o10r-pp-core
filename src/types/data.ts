@@ -1,18 +1,14 @@
-export interface PaymentData {
-  id: string;
-  amount: number;
-  currency: string;
-  description?: string;
-  customer_id?: number;
+export interface PaymentIntentData {
+  amount: number,
+  currency: string,
+  paymentId: string,
+  paymentDescription?: string,
+  customerId?: number
 }
 
-export interface ProjectSettingsData {
-  methods: PaymentMethodData[];
-}
-
-export interface InitData {
-  payment: PaymentData;
-  project: ProjectSettingsData;
+export interface SessionData {
+  details: PaymentIntentData,
+  methods: PaymentMethodData[]
 }
 
 export type TranslationData = Record<string, string>;
@@ -20,7 +16,7 @@ export type TranslationData = Record<string, string>;
 export interface PaymentMethodData {
   code: string,
   icon: string,
-  fields: Field[]
+  schema: Field[]
 }
 
 export interface FieldValidationRules {

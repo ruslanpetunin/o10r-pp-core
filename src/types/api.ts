@@ -1,13 +1,17 @@
 import type {
-  InitData,
   PaymentStatusData,
   SavedCard,
+  SessionData,
   TranslationData
 } from './data'
 import type { Language } from './translator';
 
+export type ApiResponse<T> = {
+  data: T;
+}
+
 export interface Api {
-  getInitData: (sid: string) => Promise<InitData>;
+  getSession: (sid: string) => Promise<SessionData>;
   getSavedCards: (sid: string) => Promise<SavedCard[]>;
   getTranslations: (language: Language) => Promise<TranslationData>;
   getPaymentStatus: (sid: string) => Promise<PaymentStatusData>;

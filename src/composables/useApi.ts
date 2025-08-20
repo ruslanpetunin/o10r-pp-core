@@ -1,6 +1,6 @@
-import type { Api } from '../types/api';
+import type { Api, ApiResponse } from '../types/api';
 import type {
-  InitData,
+  SessionData,
   PaymentStatusData,
   SavedCard,
   TranslationData
@@ -12,12 +12,12 @@ import useHttp from './useHttp';
 export default function(host: string): Api {
   const { request } = useHttp();
 
-  async function getInitData(sid: string): Promise<InitData> {
-    return request<InitData>(`${host}/session/${sid}.json`);
+  async function getSession(sid: string): Promise<SessionData> {
+    return request<ApiResponse<SessionData>>(`${host}/v1/session?client_secret=${sid}`).then(({ data }) => data);
   }
 
   async function getTranslations(language: Language): Promise<TranslationData> {
-    return request<TranslationData>(`${host}/translations/${language}.json`);
+    return request<TranslationData>(`/translations/${language}.json`);
   }
 
   let attempts = 0;
@@ -187,7 +187,7 @@ export default function(host: string): Api {
   }
 
   return {
-    getInitData,
+    getSession,
     getSavedCards,
     getTranslations,
     getPaymentStatus,
