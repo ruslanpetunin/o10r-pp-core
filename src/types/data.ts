@@ -7,7 +7,7 @@ export interface PaymentIntentData {
 }
 
 export interface SessionData {
-  details: PaymentIntentData,
+  payment: PaymentIntentData,
   methods: PaymentMethodData[]
 }
 
@@ -65,16 +65,26 @@ export type Field =
   | FieldCheckbox;
 
 export type PaymentStatusData =
-  | { status: PaymentStatus.NOT_STARTED }
-  | { status: PaymentStatus.PENDING } & PaymentStatusInfo
-  | { status: PaymentStatus.AWAITING_3DS_RESULT } & PaymentStatusInfo & ThreeDS & Account
-  | { status: PaymentStatus.AWAITING_REDIRECT } & PaymentStatusInfo & Redirect
-  | { status: PaymentStatus.AWAITING_CLARIFICATION } & PaymentStatusInfo & Clarification
-  | { status: PaymentStatus.AWAITING_CUSTOMER_ACTION } & PaymentStatusInfo
-  | { status: PaymentStatus.SUCCESS } & PaymentStatusInfo
-  | { status: PaymentStatus.FAILED } & PaymentStatusInfo;
+  | PaymentStatusDataBase<PaymentStatus.NOT_STARTED, undefined>
+  | PaymentStatusDataBase<PaymentStatus.PENDING, undefined>
+  | PaymentStatusDataBase<PaymentStatus.AWAITING_3DS_RESULT, string> & AcsSection & AccountSection
+  | PaymentStatusDataBase<PaymentStatus.AWAITING_REDIRECT, string> & ApsSection
+  | PaymentStatusDataBase<PaymentStatus.AWAITING_CLARIFICATION, string> & ClarificationSection
+  | PaymentStatusDataBase<PaymentStatus.AWAITING_CUSTOMER_ACTION, string>
+  | PaymentStatusDataBase<PaymentStatus.SUCCESS, string>
+  | PaymentStatusDataBase<PaymentStatus.FAILED, string>
+  ;
 
-export interface Account {
+export type PaymentStatusDataBase<S extends PaymentStatus, M> = { status: S } & PaymentSection<S, M>;
+
+export interface PaymentSection<S extends PaymentStatus, M> {
+  payment: {
+    status: S,
+    method_code: M
+  }
+}
+
+export interface AccountSection {
   account: {
     number: string;
     expiry_month: string;
@@ -83,53 +93,49 @@ export interface Account {
   }
 }
 
-export interface ThreeDS {
-  threeds: { iframe: ThreeDS2Iframe } | { redirect: ThreeDS2Redirect | ThreeDS1, is_cascading?: boolean }
-}
-
-export type Clarification = {
-  clarification_fields: Field[]
-}
-
-export type Redirect = {
-  redirect: {
-    url: string;
-    method: 'GET' | 'POST';
-    params?: Record<string, string>;
+export interface ApsSection {
+  aps: {
+    redirect: Redirect
   }
 }
 
-export type ThreeDS1 = {
+export interface AcsSection {
+  acs: {
+    iframe: Redirect<ThreeDs2IframeBody>
+  } | {
+    redirect: Redirect<ThreeDs1Body> | Redirect<ThreeDs2Body>,
+    is_cascading?: boolean
+  }
+}
+
+export type ClarificationSection = {
+  clarification: Field[]
+}
+
+export type Redirect<B extends Record<string, string> = Record<string, string>> = {
   url: string;
-  params: {
-    md: string;
-    pa_req: string;
-    term_url: string;
-  }
+  method: 'GET' | 'POST';
+  body?: B;
 }
 
-export type ThreeDS2Iframe = {
-  url: string;
-  params: {
-    threeDSMethodData: string;
-    '3DSMethodData': string;
-  };
+export type ThreeDs1Body = {
+  md: string;
+  pa_req: string;
+  term_url: string;
 }
 
-export type ThreeDS2Redirect = {
-  url: string,
-  params: {
-    threeDSSessionData: string,
-    creq: string,
-  }
+export type ThreeDs2Body = {
+  threeDSSessionData: string,
+  creq: string,
 }
 
-export type PaymentStatusInfo = {
-  payment_method_code: string;
+export type ThreeDs2IframeBody = {
+  threeDSMethodData: string;
+  '3DSMethodData': string;
 }
 
 export enum PaymentStatus {
-  NOT_STARTED = 'not found',
+  NOT_STARTED = 'unpaid',
   PENDING = 'pending',
   AWAITING_3DS_RESULT = 'awaiting 3ds result',
   AWAITING_REDIRECT = 'awaiting redirect result',

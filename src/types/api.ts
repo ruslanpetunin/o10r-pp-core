@@ -16,6 +16,6 @@ export interface Api {
   getTranslations: (language: Language) => Promise<TranslationData>;
   getPaymentStatus: (sid: string) => Promise<PaymentStatusData>;
   removeSavedCard: (sid: string, cardId: number) => Promise<void>;
-  pay: (sid: string, data: Record<string, unknown>) => Promise<void>;
+  pay: (sid: string, paymentMethodCode: string, data: Record<string, unknown>) => Promise<void>;
   clarify: (sid: string, data: Record<string, unknown>) => Promise<void>;
 }
