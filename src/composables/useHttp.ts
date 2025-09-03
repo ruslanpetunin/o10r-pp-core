@@ -8,11 +8,11 @@ async function request<T = unknown>(
 ): Promise<T> {
   const { headers = {}, body } = options;
 
-  const fetchOptions: RequestInit = { method, headers: headers || {} };
+  const fetchOptions: RequestInit = { method, headers };
 
   if (method === HttpMethod.POST && body) {
-    fetchOptions.headers['Content-Type'] = 'application/json';
     fetchOptions.body = JSON.stringify(body);
+    fetchOptions.headers = { 'Content-Type': 'application/json', ...fetchOptions.headers };
   }
 
   let response: Response;
