@@ -27,9 +27,7 @@ export default function(host: string): Api {
   }
 
   async function removeSavedCard(sid: string, cardId: number): Promise<void> {
-    console.log(`Removing saved card with ID ${cardId} via sid: ${sid}`);
-
-    return new Promise((resolve) => setTimeout(resolve, 1000));
+    return request<void>(`${host}/v1/customer/card/${cardId}?client_secret=${sid}`, HttpMethod.DELETE);
   }
 
   async function getSavedCards(sid: string): Promise<SavedCard[]> {
