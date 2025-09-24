@@ -16,7 +16,15 @@ export default function(host: string): Api {
   }
 
   async function getPaymentStatus(sid: string): Promise<PaymentStatusData> {
-    return request<ApiResponse<PaymentStatusData>>(`${host}/v1/status?client_secret=${sid}`)
+    return request<ApiResponse<PaymentStatusData>>(
+      `${host}/v1/gateway?client_secret=${sid}`,
+      HttpMethod.POST,
+      {
+        body: {
+          providerCode: 'status'
+        }
+      }
+    )
       .then(
         ({ data }) => {
           data.status = data.payment.status;
@@ -27,11 +35,31 @@ export default function(host: string): Api {
   }
 
   async function removeSavedCard(sid: string, cardId: number): Promise<void> {
-    return request<void>(`${host}/v1/customer/card/${cardId}?client_secret=${sid}`, HttpMethod.DELETE);
+    return request<void>(
+      `${host}/v1/gateway?client_secret=${sid}`,
+      HttpMethod.POST,
+      {
+        body: {
+          providerCode: 'saved-account-delete',
+          payload: {
+            card_id: cardId
+          }
+        }
+      }
+    );
   }
 
   async function getSavedCards(sid: string): Promise<SavedCard[]> {
-    return request<ApiResponse<SavedCard[]>>(`${host}/v1/customer/card?client_secret=${sid}`).then(({ data }) => data);
+    return request<ApiResponse<SavedCard[]>>(
+      `${host}/v1/gateway?client_secret=${sid}`,
+      HttpMethod.POST,
+      {
+        body: {
+          providerCode: 'saved-account'
+        }
+      }
+    )
+      .then(({ data }) => data);
   }
 
   async function pay(sid: string, paymentMethodCode: string, data: Record<string, unknown>): Promise<void> {
@@ -49,11 +77,14 @@ export default function(host: string): Api {
 
   async function clarify(sid: string, data: Record<string, unknown>): Promise<void> {
     await request(
-      `${host}/v1/clarification?client_secret=${sid}`,
+      `${host}/v1/gateway?client_secret=${sid}`,
       HttpMethod.POST,
       {
         body: {
-          fields: data
+          providerCode: 'clarification',
+          payload: {
+            fields: data
+          }
         }
       }
     );

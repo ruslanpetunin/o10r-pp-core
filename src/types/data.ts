@@ -3,10 +3,14 @@ export interface PaymentIntentData {
   currency: string,
   paymentId: string,
   paymentDescription?: string,
-  customerId?: number
+}
+
+export interface CustomerData {
+  id?: number
 }
 
 export interface SessionData {
+  customer: CustomerData,
   payment: PaymentIntentData,
   methods: PaymentMethodData[]
 }
