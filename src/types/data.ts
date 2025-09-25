@@ -6,7 +6,12 @@ export interface PaymentIntentData {
 }
 
 export interface CustomerData {
-  id?: number
+  id?: number,
+  billing?: BillingData
+}
+
+export interface BillingData {
+  mode: 'required' | 'auto',
 }
 
 export interface SessionData {
