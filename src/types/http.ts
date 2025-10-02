@@ -28,3 +28,21 @@ export class FetchRequestError extends Error {
     this.context = context;
   }
 }
+
+export interface HttpRequest {
+  url: string;
+  method: HttpMethod;
+  headers?: Record<string, string>;
+  body?: Record<string, unknown>;
+}
+
+export interface HttpResponse<T = unknown> {
+  data: T;
+  status: number;
+  headers: Headers;
+}
+
+export type HttpMiddleware = <T = unknown>(
+  request: HttpRequest,
+  next: (req: HttpRequest) => Promise<HttpResponse<T>>
+) => Promise<HttpResponse<T>>;
