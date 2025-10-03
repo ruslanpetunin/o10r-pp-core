@@ -1,34 +1,24 @@
-import { FetchRequestError, HttpMethod } from '../types/http';
+import { FetchRequestError, HttpMethod, type HttpMiddleware, type HttpRequest, type HttpResponse } from '../types/http'
 import type { FetchOptions } from '../types/http';
 
-async function request<T = unknown>(
-  url: string,
-  method: HttpMethod = HttpMethod.GET,
-  options: FetchOptions = {}
-): Promise<T> {
-  const { headers = {}, body } = options;
+async function coreRequest<T = unknown>(request: HttpRequest): Promise<HttpResponse<T>> {
+  const { url, method, headers = {}, body } = request;
 
-  const fetchOptions: RequestInit = { method, headers };
+  const fetchOptions: RequestInit = {
+    method,
+    headers,
+  };
 
-  if (method === HttpMethod.POST && body) {
+  const isBodyShouldBeEncoded= (method === HttpMethod.POST && body);
+
+  if (isBodyShouldBeEncoded) {
     fetchOptions.body = JSON.stringify(body);
-    fetchOptions.headers = { 'Content-Type': 'application/json', ...fetchOptions.headers };
+    fetchOptions.headers = {
+      'Content-Type': 'application/json',
+      ...headers
+    };
   }
-
-  let response: Response;
-
-  try {
-    response = await fetch(url, fetchOptions);
-  } catch {
-    throw new FetchRequestError('Network error occurred', {
-      url,
-      method,
-      requestHeaders: headers,
-      requestData: body,
-    });
-  }
-
-  const responseData = await safeJsonParse(response);
+  const response: Response = await fetch(url, fetchOptions);
 
   if (!response.ok) {
     throw new FetchRequestError('Fetch request failed', {
@@ -38,11 +28,16 @@ async function request<T = unknown>(
       requestData: body,
       responseStatus: response.status,
       responseHeaders: response.headers,
-      responseData,
     });
   }
 
-  return responseData as T;
+  const data = await safeJsonParse(response) as T;
+
+  return {
+    data,
+    status: response.status,
+    headers: response.headers,
+  };
 }
 
 async function safeJsonParse(response: Response): Promise<unknown> {
@@ -59,8 +54,38 @@ async function safeJsonParse(response: Response): Promise<unknown> {
   }
 }
 
-export default function() {
+export default function(middleware?: HttpMiddleware) {
+  const wrappedClient = (request: HttpRequest) => middleware
+    ? middleware(request, coreRequest)
+    : coreRequest(request);
+
+  async function request<T = unknown>(
+    url: string,
+    method: HttpMethod = HttpMethod.GET,
+    options: FetchOptions = {}
+  ): Promise<T> {
+    try {
+      const response = await wrappedClient({
+        url,
+        method,
+        headers: options.headers,
+        body: options.body,
+      });
+      return response.data as T;
+    } catch (error: unknown) {
+      if (error instanceof FetchRequestError) {
+        throw error;
+      }
+      throw new FetchRequestError('Network error occurred', {
+        url,
+        method,
+        requestHeaders: options.headers,
+        requestData: options.body,
+      });
+    }
+  }
+
   return {
-    request
+    request,
   };
 }

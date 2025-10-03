@@ -2,10 +2,10 @@ import type { Api, ApiResponse } from '../types/api';
 import type { PaymentStatusData, SavedCard, SessionData, TranslationData } from '../types/data';
 import type { Language } from '../types/translator';
 import useHttp from './useHttp';
-import { HttpMethod } from "./../types/http";
+import { HttpMethod, type HttpMiddleware } from '../types/http';
 
-export default function(host: string): Api {
-  const { request } = useHttp();
+export default function(host: string, middleware?: HttpMiddleware): Api {
+  const { request } = useHttp(middleware);
 
   async function getSession(sid: string): Promise<SessionData> {
     return request<ApiResponse<SessionData>>(`${host}/v1/session?client_secret=${sid}`).then(({ data }) => data);
