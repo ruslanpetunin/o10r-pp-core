@@ -7,11 +7,17 @@ export interface PaymentIntentData {
 
 export interface CustomerData {
   id?: number,
-  billing?: BillingData
+  billing?: BillingData,
+  shipping?: ShippingData,
 }
 
 export interface BillingData {
   mode: 'required' | 'auto',
+}
+
+export interface ShippingData {
+  mode: 'required' | 'auto',
+  allowedCountries?: string[],
 }
 
 export interface SessionData {
@@ -38,7 +44,6 @@ export interface FieldValidationRules {
 }
 
 export interface FieldOption {
-  label: string;
   value: string;
 }
 

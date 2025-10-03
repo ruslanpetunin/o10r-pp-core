@@ -5,7 +5,9 @@ export { default as useTranslator } from './composables/useTranslator';
 export { default as useCookies } from './composables/useCookies';
 export { default as useCardTypeDetector } from './composables/useCardTypeDetector';
 export { default as useFormatter } from './composables/useFormatter';
-export { default as useBillingFields } from './composables/useBillingFields';
+export { default as useBillingFields, shippingDataToBillingData } from './composables/useBillingFields';
+export { default as useShippingFields } from './composables/useShippingFields';
+export { default as useCustomerFields } from './composables/useCustomerFields';
 
 export * from './types/event';
 export * from './types/data';
