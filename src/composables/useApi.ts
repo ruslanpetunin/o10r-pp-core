@@ -1,4 +1,4 @@
-import type { Api, ApiResponse } from '../types/api';
+import type { Api, ApiResponse, PayFields } from '../types/api';
 import type { PaymentStatusData, SavedCard, SessionData, TranslationData } from '../types/data';
 import type { Language } from '../types/translator';
 import useHttp from './useHttp';
@@ -62,7 +62,7 @@ export default function(host: string, middleware?: HttpMiddleware): Api {
       .then(({ data }) => data);
   }
 
-  async function pay(sid: string, paymentMethodCode: string, data: Record<string, unknown>): Promise<void> {
+  async function pay(sid: string, paymentMethodCode: string, data: PayFields): Promise<void> {
     await request(
       `${host}/v1/session/confirm?client_secret=${sid}`,
       HttpMethod.POST,
