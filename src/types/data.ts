@@ -23,10 +23,16 @@ export interface ShippingData {
 export interface SessionData {
   customer: CustomerData,
   payment: PaymentIntentData,
-  methods: PaymentMethodData[]
+  methods: PaymentMethodData[],
+  redirect: RedirectData
 }
 
 export type TranslationData = Record<string, string>;
+
+export interface RedirectData {
+  return_url?: string,
+  cancel_url?: string
+}
 
 export interface PaymentMethodData {
   code: string,
