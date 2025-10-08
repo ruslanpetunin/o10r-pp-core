@@ -20,8 +20,14 @@ export interface ShippingData {
   allowedCountries?: string[],
 }
 
+export interface ConsentField {
+  key: string;
+  text: string;
+}
+
 export interface SessionData {
   customer: CustomerData,
+  consent: ConsentField[],
   payment: PaymentIntentData,
   methods: PaymentMethodData[]
 }
@@ -50,6 +56,7 @@ export interface FieldOption {
 export interface FieldBase {
   name: string,
   value?: string;
+  label?: string;
   disabled?: boolean,
   autocomplete?: string,
   validation?: Partial<FieldValidationRules>,
