@@ -56,7 +56,6 @@ export interface FieldOption {
 export interface FieldBase {
   name: string,
   value?: string;
-  label?: string;
   disabled?: boolean,
   autocomplete?: string,
   validation?: Partial<FieldValidationRules>,
@@ -78,6 +77,7 @@ export interface FieldSelect extends FieldBase {
 
 export interface FieldCheckbox extends FieldBase {
   type: 'checkbox';
+  label?: string;
 }
 
 export type Field =
