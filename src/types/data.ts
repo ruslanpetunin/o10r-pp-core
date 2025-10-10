@@ -20,8 +20,14 @@ export interface ShippingData {
   allowedCountries?: string[],
 }
 
+export interface ConsentField {
+  key: string;
+  text: string;
+}
+
 export interface SessionData {
   customer: CustomerData,
+  consent: ConsentField[],
   payment: PaymentIntentData,
   methods: PaymentMethodData[],
   redirect: RedirectData
@@ -77,6 +83,7 @@ export interface FieldSelect extends FieldBase {
 
 export interface FieldCheckbox extends FieldBase {
   type: 'checkbox';
+  label?: string;
 }
 
 export type Field =
