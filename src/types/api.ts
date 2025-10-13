@@ -8,7 +8,7 @@ import type { Language } from './translator';
 
 export type PayFields = {
   method: Record<string, unknown>,
-  customer?: Record<string, unknown>,
+  customer: Record<string, unknown>,
   billing?: Record<string, unknown>,
   shipping?: Record<string, unknown>,
 };
