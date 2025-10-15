@@ -2,8 +2,18 @@ export interface PaymentIntentData {
   amount: number,
   currency: string,
   paymentId: string,
+  mode: PaymentMode,
   paymentDescription?: string,
 }
+
+export enum PaymentMode {
+  PAYMENT = 'payment',
+  TOKENIZATION = 'tokenization',
+  VERIFICATION = 'verification',
+}
+
+// { "payment_method_code": { "some_option": "value" } }
+export type OptionsData = Record<string, Record<string, unknown>>;
 
 export interface CustomerData {
   id?: number,
@@ -29,6 +39,7 @@ export interface SessionData {
   customer: CustomerData,
   consent: ConsentField[],
   payment: PaymentIntentData,
+  options: OptionsData,
   methods: PaymentMethodData[],
   redirect: RedirectData
 }
@@ -48,7 +59,7 @@ export interface PaymentMethodData {
 
 export interface FieldValidationRules {
   required: [];
-  pan: [];
+  pan: [string[]|undefined];
   expiry_month: [];
   expiry_year: [string|undefined];
   cvv: [string|undefined];
