@@ -3,7 +3,11 @@ export interface PaymentIntentData {
   currency: string,
   paymentId: string,
   mode: PaymentMode,
-  paymentDescription?: string,
+}
+
+export interface TextsData {
+  contacts?: string,
+  description?: string
 }
 
 export enum PaymentMode {
@@ -41,7 +45,8 @@ export interface SessionData {
   payment: PaymentIntentData,
   options: OptionsData,
   methods: PaymentMethodData[],
-  redirect: RedirectData
+  redirect: RedirectData,
+  texts: TextsData,
 }
 
 export type TranslationData = Record<string, string>;
