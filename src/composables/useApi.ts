@@ -62,14 +62,15 @@ export default function(host: string, middleware?: HttpMiddleware): Api {
       .then(({ data }) => data);
   }
 
-  async function pay(sid: string, paymentMethodCode: string, data: PayFields): Promise<void> {
+  async function pay(sid: string, paymentMethodCode: string, fingerprint: string, data: PayFields): Promise<void> {
     await request(
       `${host}/v1/session/confirm?client_secret=${sid}`,
       HttpMethod.POST,
       {
         body: {
           methodCode: paymentMethodCode,
-          fields: data
+          fields: data,
+          fingerprint
         }
       }
     );
