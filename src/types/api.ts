@@ -13,6 +13,11 @@ export type PayFields = {
   shipping?: Record<string, unknown>,
 };
 
+export type FingerprintData = {
+  params: Record<string, unknown>,
+  hash: string
+};
+
 export type ApiResponse<T> = {
   data: T;
 }
@@ -23,6 +28,6 @@ export interface Api {
   getTranslations: (language: Language) => Promise<TranslationData>;
   getPaymentStatus: (sid: string) => Promise<PaymentStatusData>;
   removeSavedCard: (sid: string, cardId: number) => Promise<void>;
-  pay: (sid: string, paymentMethodCode: string, fingerprint: string, data: PayFields) => Promise<void>;
+  pay: (sid: string, paymentMethodCode: string, fingerprint: FingerprintData, data: PayFields) => Promise<void>;
   clarify: (sid: string, data: Record<string, unknown>) => Promise<void>;
 }
